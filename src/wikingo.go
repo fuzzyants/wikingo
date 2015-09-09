@@ -2,16 +2,30 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 )
+
+const addr = "localhost:9090"
+
+//helper to check errors
+func check(e error, whoDidIt string) {
+	if e != nil {
+		log.Fatal(whoDidIt+": ", e)
+	}
+}
 
 func renderPage(w http.ResponseWriter, r *http.Request) {
 	//print requested path to console
 	fmt.Println("path: ", r.URL.Path)
 
-	//reply something
-	fmt.Fprintf(w, "This is wikingo.")
+	//load a file
+	dat, err := ioutil.ReadFile("data/index.md")
+	check(err, "ReadFile")
+
+	//send it to the client
+	fmt.Fprintf(w, string(dat))
 }
 
 func main() {
@@ -19,8 +33,7 @@ func main() {
 	http.HandleFunc("/", renderPage)
 
 	//start the server
-	err := http.ListenAndServe(":9090", nil)
-	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
+	log.Printf("Now listening on %s...\n", addr)
+	err := http.ListenAndServe(addr, nil)
+	check(err, "ListenAndServe")
 }
