@@ -5,6 +5,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+
+	"github.com/russross/blackfriday"
 )
 
 const addr = "localhost:9090"
@@ -25,8 +27,9 @@ func renderPage(w http.ResponseWriter, r *http.Request) {
 	dat, err := ioutil.ReadFile(dataFile)
 	check(err, "ReadFile")
 
+	markdown := blackfriday.MarkdownCommon(dat)
 	//send it to the client
-	fmt.Fprintf(w, string(dat))
+	fmt.Fprintf(w, string(markdown))
 }
 
 func main() {
