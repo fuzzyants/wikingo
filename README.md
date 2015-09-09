@@ -1,2 +1,2 @@
 # wikingo
-A fast text organization program
+A fast text organization program.
