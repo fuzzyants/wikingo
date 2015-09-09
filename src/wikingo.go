@@ -8,6 +8,7 @@ import (
 )
 
 const addr = "localhost:9090"
+const dataFile = "data/index.md"
 
 //helper to check errors
 func check(e error, whoDidIt string) {
@@ -21,7 +22,7 @@ func renderPage(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("path: ", r.URL.Path)
 
 	//load a file
-	dat, err := ioutil.ReadFile("data/index.md")
+	dat, err := ioutil.ReadFile(dataFile)
 	check(err, "ReadFile")
 
 	//send it to the client
