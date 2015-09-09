@@ -27,9 +27,9 @@ func renderPage(w http.ResponseWriter, r *http.Request) {
 	dat, err := ioutil.ReadFile(dataFile)
 	check(err, "ReadFile")
 
-	markdown := blackfriday.MarkdownCommon(dat)
+	output := blackfriday.MarkdownCommon(dat)
 	//send it to the client
-	fmt.Fprintf(w, string(markdown))
+	fmt.Fprintf(w, string(output))
 }
 
 func main() {
