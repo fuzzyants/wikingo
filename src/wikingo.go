@@ -22,7 +22,7 @@ func main() {
 	// Create a new router
 	r := httprouter.New()
 
-	// Get a UserController instance
+	// Get a PageController instance
 	pc := controllers.NewPageController()
 
 	// Set up a route
