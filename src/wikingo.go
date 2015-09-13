@@ -1,17 +1,14 @@
 package main
 
 import (
-	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 
+	"github.com/fuzzyants/wikingo/src/controllers"
 	"github.com/julienschmidt/httprouter"
-	"github.com/russross/blackfriday"
 )
 
 const addr = "localhost:9090"
-const dataFile = "../data/index.md"
 
 //helper to check errors
 func check(e error, whoDidIt string) {
@@ -20,27 +17,16 @@ func check(e error, whoDidIt string) {
 	}
 }
 
-func renderPage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-
-	//print requested path to console
-	fmt.Println("path: ", r.URL.Path)
-
-	//load a file
-	dat, err := ioutil.ReadFile(dataFile)
-	check(err, "ReadFile")
-
-	output := blackfriday.MarkdownCommon(dat)
-	//send it to the client
-	fmt.Fprintf(w, string(output))
-}
-
 func main() {
 
 	// Create a new router
 	r := httprouter.New()
 
+	// Get a UserController instance
+	pc := controllers.NewPageController()
+
 	// Set up a route
-	r.GET("/", renderPage)
+	r.GET("/", pc.GetPage)
 
 	//start the server
 	log.Printf("Now listening on %s...\n", addr)
