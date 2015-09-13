@@ -6,11 +6,12 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/julienschmidt/httprouter"
 	"github.com/russross/blackfriday"
 )
 
 const addr = "localhost:9090"
-const dataFile = "data/index.md"
+const dataFile = "../data/index.md"
 
 //helper to check errors
 func check(e error, whoDidIt string) {
@@ -19,7 +20,8 @@ func check(e error, whoDidIt string) {
 	}
 }
 
-func renderPage(w http.ResponseWriter, r *http.Request) {
+func renderPage(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
+
 	//print requested path to console
 	fmt.Println("path: ", r.URL.Path)
 
@@ -33,11 +35,15 @@ func renderPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	//set up a route
-	http.HandleFunc("/", renderPage)
+
+	// Create a new router
+	r := httprouter.New()
+
+	// Set up a route
+	r.GET("/", renderPage)
 
 	//start the server
 	log.Printf("Now listening on %s...\n", addr)
-	err := http.ListenAndServe(addr, nil)
+	err := http.ListenAndServe(addr, r)
 	check(err, "ListenAndServe")
 }
