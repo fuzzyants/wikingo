@@ -26,6 +26,8 @@ func main() {
 	pc := controllers.NewPageController()
 
 	// Set up a route
+	r.GET("/page", pc.GetPage)
+	// Set up a route
 	r.GET("/", pc.GetPage)
 
 	//start the server
