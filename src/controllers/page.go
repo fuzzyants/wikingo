@@ -1,13 +1,14 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
-	"github.com/russross/blackfriday"
+	// "github.com/russross/blackfriday"
 
 	"github.com/fuzzyants/wikingo/src/models"
 )
@@ -36,12 +37,22 @@ func (pc PageController) GetPage(w http.ResponseWriter, r *http.Request, _ httpr
 		log.Fatal("ReadFile"+": ", err)
 	}
 
-	// Instantiate a new Page
+	// Instantiate a new Page struct
 	p := models.Page{
-		Content: dat,
+		Content: string(dat),
+		Title:   "Grüße",
+		Author:  "Fabian",
 	}
 
-	output := blackfriday.MarkdownCommon(p.Content)
+	// Set headers so that the json API is exposed
+	// Unsafe for production
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(201)
+
+	// Marshal the page data
+	uj, _ := json.Marshal(p)
+
 	//send it to the client
-	fmt.Fprintf(w, string(output))
+	fmt.Fprintf(w, string(uj))
 }
