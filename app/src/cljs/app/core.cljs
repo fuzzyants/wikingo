@@ -1,12 +1,12 @@
 (ns app.core
-    (:require [reagent.core :as reagent :refer [atom]]
-              [reagent.session :as session]
-              [secretary.core :as secretary :include-macros true]
-              [goog.events :as events]
-              [goog.history.EventType :as EventType]
-              [ajax.core :refer [GET POST]]
-              [markdown.core :as md])
-    (:import goog.History))
+  (:require [reagent.core :as reagent :refer [atom]]
+            [reagent.session :as session]
+            [secretary.core :as secretary :include-macros true]
+            [goog.events :as events]
+            [goog.history.EventType :as EventType]
+            [ajax.core :refer [GET POST]]
+            [markdown.core :as md])
+  (:import goog.History))
 
 ;; -------------------------
 ;; Views
@@ -23,19 +23,19 @@
 ; let binds the page content and will only be executed *once*
 (defn render-page []
   (let [get-page (fn [] (GET "http://localhost:9090/page" {:handler page-handler}))]
-  ; Get the page content
-  (get-page)
-  ; Rendering function that will update every time the @page atom changes
-  (fn []
-    [:div {:dangerouslySetInnerHTML ; Only a good idea if we trust the markdown
-              {:__html (md/md->html @page)}}])))
+    ; Get the page content
+    (get-page)
+    ; Rendering function that will update every time the @page atom changes
+    (fn []
+      [:div {:dangerouslySetInnerHTML ; Only a good idea if we trust the markdown
+             {:__html (md/md->html @page)}}])))
 
 ; Update the page atom
 (defn atom-input [value]
   [:textarea {:rows 5
-           :cols 50
-           :value @value
-           :on-change #(reset! value (-> % .-target .-value))}])
+              :cols 50
+              :value @value
+              :on-change #(reset! value (-> % .-target .-value))}])
 
 ; Component to update the markdown content
 (defn update-page []
@@ -64,7 +64,7 @@
 (secretary/set-config! :prefix "#")
 
 (secretary/defroute "/" []
-  (session/put! :current-page #'home-page))
+                    (session/put! :current-page #'home-page))
 
 
 ;; -------------------------
@@ -73,9 +73,9 @@
 (defn hook-browser-navigation! []
   (doto (History.)
     (events/listen
-     EventType/NAVIGATE
-     (fn [event]
-       (secretary/dispatch! (.-token event))))
+      EventType/NAVIGATE
+      (fn [event]
+        (secretary/dispatch! (.-token event))))
     (.setEnabled true)))
 
 ;; -------------------------
