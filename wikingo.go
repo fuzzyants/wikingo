@@ -10,7 +10,7 @@ import (
 )
 
 const addr = "localhost:9090"
-const dataFile = "data/index.md"
+const dataFile = "wikingo/data/index.md"
 
 //helper to check errors
 func check(e error, whoDidIt string) {

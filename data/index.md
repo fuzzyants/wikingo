@@ -1,4 +1,2 @@
 This is wikingo.
 ================
-
-hallo
