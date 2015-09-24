@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/fuzzyants/wikingo/src/controllers"
+	"github.com/fuzzyants/wikingo/controllers"
 	"github.com/julienschmidt/httprouter"
 )
 

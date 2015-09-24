@@ -10,10 +10,10 @@ import (
 	"github.com/julienschmidt/httprouter"
 	// "github.com/russross/blackfriday"
 
-	"github.com/fuzzyants/wikingo/src/models"
+	"github.com/fuzzyants/wikingo/models"
 )
 
-const dataFile = "../data/index.md"
+const dataFile = "data/index.md"
 
 type (
 	// PageController is the controller for the Page resource
