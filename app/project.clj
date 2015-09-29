@@ -1,90 +1,50 @@
 (defproject app "0.1.0-SNAPSHOT"
-  :description "FIXME: write description"
-  :url "http://example.com/FIXME"
-  :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
-
-  :dependencies [[org.clojure/clojure "1.7.0"]
-                 [ring-server "0.4.0"]
-                 [reagent "0.5.1"]
-                 [reagent-forms "0.5.11"]
-                 [reagent-utils "0.1.5"]
-                 [ring "1.4.0"]
-                 [ring/ring-defaults "0.1.5"]
-                 [prone "0.8.2"]
-                 [compojure "1.4.0"]
-                 [hiccup "1.0.5"]
-                 [environ "1.0.1"]
-                 [org.clojure/clojurescript "1.7.122" :scope "provided"]
+  :dependencies [[org.clojure/clojure "1.6.0"]
+                 [org.clojure/clojurescript "0.0-3211"]
+                 [reagent "0.5.0"]
+                 [re-frame "0.4.1"]
+                 [re-com "0.6.1"]
                  [secretary "1.2.3"]
-                 [cljs-ajax "0.3.14"]
-                 [markdown-clj "0.9.74"]]
+                 [garden "1.2.5"]]
 
-  :plugins [[lein-environ "1.0.1"]
-            [lein-asset-minifier "0.2.2"]]
+  :source-paths ["src/clj"]
 
-  :ring {:handler app.handler/app
-         :uberwar-name "app.war"}
+  :plugins [[lein-cljsbuild "1.0.6"]
+            [lein-figwheel "0.3.3" :exclusions [cider/cider-nrepl]] 
+            [lein-garden "0.2.6"] ]
 
-  :min-lein-version "2.5.0"
+  :clean-targets ^{:protect false} ["resources/public/js/compiled" "target" 
+                                    "test/js" 
+                                    "resources/public/css/compiled"]
+  
+  :garden {:builds [{:id "screen"
+                     :source-paths ["src/clj"]
+                     :stylesheet app.css/screen
+                     :compiler {:output-to "resources/public/css/compiled/screen.css"
+                                :pretty-print? true}}]}
 
-  :uberjar-name "app.jar"
+  :cljsbuild {:builds [{:id "dev"
+                        :source-paths ["src/cljs"]
 
-  :main app.server
+                        :figwheel {:on-jsload "app.core/mount-root"}
 
-  :clean-targets ^{:protect false} [:target-path
-                                    [:cljsbuild :builds :app :compiler :output-dir]
-                                    [:cljsbuild :builds :app :compiler :output-to]]
+                        :compiler {:main app.core
+                                   :output-to "resources/public/js/compiled/app.js"
+                                   :output-dir "resources/public/js/compiled/out"
+                                   :asset-path "js/compiled/out"
+                                   :source-map-timestamp true}}
 
-  :source-paths ["src/clj" "src/cljc"]
+                       {:id "test"
+                        :source-paths ["src/cljs" "test/cljs"]
+                        :notify-command ["phantomjs" "test/unit-test.js" "test/unit-test.html"]
+                        :compiler {:optimizations :whitespace
+                                   :pretty-print true
+                                   :output-to "test/js/app_test.js"
+                                   :warnings {:single-segment-namespace false}}}
 
-  :minify-assets
-  {:assets
-    {"resources/public/css/site.min.css" "resources/public/css/site.css"}}
-
-  :cljsbuild {:builds {:app {:source-paths ["src/cljs" "src/cljc"]
-                             :compiler {:output-to     "resources/public/js/app.js"
-                                        :output-dir    "resources/public/js/out"
-                                        :asset-path   "js/out"
-                                        :optimizations :none
-                                        :pretty-print  true}}}}
-
-  :profiles {:dev {:repl-options {:init-ns app.repl}
-
-                   :dependencies [[ring/ring-mock "0.3.0"]
-                                  [ring/ring-devel "1.4.0"]
-                                  [lein-figwheel "0.4.0"]
-                                  [org.clojure/tools.nrepl "0.2.11"]
-                                  [pjstadig/humane-test-output "0.7.0"]]
-
-                   :source-paths ["env/dev/clj"]
-                   :plugins [[lein-figwheel "0.4.0"]
-                             [lein-cljsbuild "1.0.6"]]
-
-                   :injections [(require 'pjstadig.humane-test-output)
-                                (pjstadig.humane-test-output/activate!)]
-
-                   :figwheel {:http-server-root "public"
-                              :server-port 3449
-                              :nrepl-port 7002
-                              :css-dirs ["resources/public/css"]
-                              :ring-handler app.handler/app}
-
-                   :env {:dev true}
-
-                   :cljsbuild {:builds {:app {:source-paths ["env/dev/cljs"]
-                                              :compiler {:main "app.dev"
-                                                         :source-map true}}
-}
-}}
-
-             :uberjar {:hooks [leiningen.cljsbuild minify-assets.plugin/hooks]
-                       :env {:production true}
-                       :aot :all
-                       :omit-source true
-                       :cljsbuild {:jar true
-                                   :builds {:app
-                                             {:source-paths ["env/prod/cljs"]
-                                              :compiler
-                                              {:optimizations :advanced
-                                               :pretty-print false}}}}}})
+                       {:id "min"
+                        :source-paths ["src/cljs"]
+                        :compiler {:main app.core
+                                   :output-to "resources/public/js/compiled/app.js"
+                                   :optimizations :advanced
+                                   :pretty-print false}}]})

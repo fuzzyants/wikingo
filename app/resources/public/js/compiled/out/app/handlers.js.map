@@ -1,0 +1,1 @@
+{"version":3,"file":"\/Users\/fabian\/Code\/go\/src\/github.com\/fuzzyants\/wikingo\/app\/resources\/public\/js\/compiled\/out\/app\/handlers.js","sources":["handlers.cljs?rel=1443555383231"],"lineCount":10,"mappings":";AAAA;;;;AAIA,yCAAA,zCAACA,+GAEA,WAAMC,EAAEA;AAAR,AAAA,kDAAA,qDAAA","names":["re-frame.core\/register-handler","_"]}

@@ -1,0 +1,2 @@
+;; Analyzed by ClojureScript 0.0-3211
+{:use-macros nil, :excludes #{}, :name app.handlers, :imports nil, :requires {db app.db, app.db app.db, re-frame.core re-frame.core, re-frame re-frame.core}, :uses nil, :require-macros nil, :cljs.analyzer/constants {:order [:initialize-db :name], :seen #{:initialize-db :name}}, :doc nil}
