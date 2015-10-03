@@ -5,18 +5,20 @@
                  [re-frame "0.4.1"]
                  [re-com "0.6.1"]
                  [secretary "1.2.3"]
-                 [garden "1.2.5"]]
+                 [garden "1.2.5"]
+                 [cljs-ajax "0.3.14"]
+                 [markdown-clj "0.9.74"]]
 
   :source-paths ["src/clj"]
 
   :plugins [[lein-cljsbuild "1.0.6"]
-            [lein-figwheel "0.3.3" :exclusions [cider/cider-nrepl]] 
+            [lein-figwheel "0.3.3" :exclusions [cider/cider-nrepl]]
             [lein-garden "0.2.6"] ]
 
-  :clean-targets ^{:protect false} ["resources/public/js/compiled" "target" 
-                                    "test/js" 
+  :clean-targets ^{:protect false} ["resources/public/js/compiled" "target"
+                                    "test/js"
                                     "resources/public/css/compiled"]
-  
+
   :garden {:builds [{:id "screen"
                      :source-paths ["src/clj"]
                      :stylesheet app.css/screen
