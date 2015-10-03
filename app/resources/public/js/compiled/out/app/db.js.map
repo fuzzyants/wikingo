@@ -1,1 +1,0 @@
-{"version":3,"file":"\/Users\/fabian\/Code\/go\/src\/github.com\/fuzzyants\/wikingo\/app\/resources\/public\/js\/compiled\/out\/app\/db.js","sources":["db.cljs?rel=1443555201180"],"lineCount":7,"mappings":";AAAA;;;AAGA,AAAKA,oBAAW,4BAAA,5BAACC","names":["app.db\/default-db","reagent.core\/atom"]}
