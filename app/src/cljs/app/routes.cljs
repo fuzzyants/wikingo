@@ -6,6 +6,9 @@
               [goog.history.EventType :as EventType]
               [re-frame.core :as re-frame]))
 
+;; --------------
+;; ROUTES ARE IGNORED
+;; --------------
 (defn hook-browser-navigation! []
   (doto (History.)
     (events/listen
@@ -19,7 +22,7 @@
   ;; --------------------
   ;; define routes here
   (defroute "/" []
-    (re-frame/dispatch [:home-panel]))
+    (re-frame/dispatch [main-panel]))
 
   ;; --------------------
   (hook-browser-navigation!))
